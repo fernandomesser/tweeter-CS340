@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { User, AuthToken } from "tweeter-shared";
 
 type SubmitFn = () => Promise<void>;
 
