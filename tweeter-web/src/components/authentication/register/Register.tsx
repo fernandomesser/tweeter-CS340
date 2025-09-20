@@ -6,8 +6,8 @@ import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import { Buffer } from "buffer";
 import AuthenticationFields from "../AuthenticationFields";
-import { useMessageActions } from "../../toaster/MessageHooks";
 import { useUserInfoActions } from "../../userInfo/UserInfoHooks";
+import { useMessageActions } from "../../toaster/MessageHooks";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -23,7 +23,7 @@ const Register = () => {
   const navigate = useNavigate();
   const { updateUserInfo } = useUserInfoActions();
   const { displayErrorMessage } = useMessageActions();
-
+  
   const checkSubmitButtonStatus = (): boolean => {
     return (
       !firstName ||
@@ -155,9 +155,13 @@ const Register = () => {
           />
           <label htmlFor="lastNameInput">Last Name</label>
         </div>
-        <AuthenticationFields
+       <AuthenticationFields
           authAction={doRegister}
           checkSubmitButtonStatus={checkSubmitButtonStatus()}
+          alias={alias}
+          password={password}
+          onAliasChange={setAlias}
+          onPasswordChange={setPassword}
         />
         <div className="form-floating mb-3">
           <input

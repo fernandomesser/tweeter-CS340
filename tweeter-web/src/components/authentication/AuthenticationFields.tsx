@@ -1,18 +1,17 @@
-import { useState } from "react";
-
 type SubmitFn = () => Promise<void>;
 
 interface Props {
   authAction: SubmitFn;
   checkSubmitButtonStatus: boolean;
+  alias: string;
+  password: string;
+  onAliasChange: (alias: string) => void;
+  onPasswordChange: (password: string) => void;
 }
 
 const AuthenticationFields = (props: Props) => {
-  const [alias, setAlias] = useState("");
-  const [password, setPassword] = useState("");
-
   const submitOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key == "Enter" && !props.checkSubmitButtonStatus) {
+    if (event.key === "Enter" && !props.checkSubmitButtonStatus) {
       props.authAction();
     }
   };
@@ -25,20 +24,23 @@ const AuthenticationFields = (props: Props) => {
           className="form-control"
           size={50}
           id="aliasInput"
-          placeholder="name@example.com"
+          placeholder="Alias"
+          value={props.alias}
           onKeyDown={submitOnEnter}
-          onChange={(event) => setAlias(event.target.value)}
+          onChange={(e) => props.onAliasChange(e.target.value)}
         />
         <label htmlFor="aliasInput">Alias</label>
       </div>
+
       <div className="form-floating">
         <input
           type="password"
           className="form-control"
           id="passwordInput"
           placeholder="Password"
+          value={props.password}
           onKeyDown={submitOnEnter}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={(e) => props.onPasswordChange(e.target.value)}
         />
         <label htmlFor="passwordInput">Password</label>
       </div>

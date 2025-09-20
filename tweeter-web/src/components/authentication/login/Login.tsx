@@ -13,8 +13,8 @@ interface Props {
 }
 
 const Login = (props: Props) => {
-  const [alias, setAlias] = useState("");
-  const [password, setPassword] = useState("");
+  const [alias, setAlias] = useState("");        // <-- moved here
+  const [password, setPassword] = useState("");  // <-- moved here
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,12 +26,6 @@ const Login = (props: Props) => {
     return !alias || !password;
   };
 
-  const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key == "Enter" && !checkSubmitButtonStatus()) {
-      doLogin();
-    }
-  };
-
   const doLogin = async () => {
     try {
       setIsLoading(true);
@@ -40,15 +34,13 @@ const Login = (props: Props) => {
 
       updateUserInfo(user, user, authToken, rememberMe);
 
-      if (!!props.originalUrl) {
+      if (props.originalUrl) {
         navigate(props.originalUrl);
       } else {
         navigate(`/feed/${user.alias}`);
       }
     } catch (error) {
-      displayErrorMessage(
-        `Failed to log user in because of exception: ${error}`
-      );
+      displayErrorMessage(`Failed to log user in because of exception: ${error}`);
     } finally {
       setIsLoading(false);
     }
@@ -68,24 +60,22 @@ const Login = (props: Props) => {
     return [user, FakeData.instance.authToken];
   };
 
-  const inputFieldFactory = () => {
-    return (
-      <>
-        <AuthenticationFields
-          authAction={doLogin}
-          checkSubmitButtonStatus={checkSubmitButtonStatus()}
-        />
-      </>
-    );
-  };
+  const inputFieldFactory = () => (
+    <AuthenticationFields
+      authAction={doLogin}
+      checkSubmitButtonStatus={checkSubmitButtonStatus()}
+      alias={alias}
+      password={password}
+      onAliasChange={setAlias}
+      onPasswordChange={setPassword}
+    />
+  );
 
-  const switchAuthenticationMethodFactory = () => {
-    return (
-      <div className="mb-3">
-        Not registered? <Link to="/register">Register</Link>
-      </div>
-    );
-  };
+  const switchAuthenticationMethodFactory = () => (
+    <div className="mb-3">
+      Not registered? <Link to="/register">Register</Link>
+    </div>
+  );
 
   return (
     <AuthenticationFormLayout
@@ -95,7 +85,7 @@ const Login = (props: Props) => {
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
       setRememberMe={setRememberMe}
-      submitButtonDisabled={checkSubmitButtonStatus}
+      submitButtonDisabled={checkSubmitButtonStatus} // likely expects a fn
       isLoading={isLoading}
       submit={doLogin}
     />
