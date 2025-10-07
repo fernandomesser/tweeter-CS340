@@ -17,7 +17,12 @@ export class UserNavigationPresenter {
     this.view = view;
   }
 
-  public async coreNavigate(alias: string, basePath = "/feed", authToken: AuthToken, displayedUser: User) {
+  public async coreNavigate(
+    alias: string,
+    basePath = "/feed",
+    authToken: AuthToken,
+    displayedUser: User
+  ) {
     try {
       if (!authToken) {
         this.view.displayErrorMessage(

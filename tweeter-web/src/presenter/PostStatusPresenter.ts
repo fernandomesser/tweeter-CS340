@@ -17,8 +17,11 @@ export class PostStatusPresenter {
     this.service = new StatusService();
   }
 
-  public async submitPost(post: string, currentUser: User, authToken: AuthToken) {
-
+  public async submitPost(
+    post: string,
+    currentUser: User,
+    authToken: AuthToken
+  ) {
     var postingStatusToastId = "";
 
     try {

@@ -28,9 +28,12 @@ const UserInfo = () => {
     displayErrorMessage: displayErrorMessage,
     setFolloweeCount: setFolloweeCount,
     setFollowerCount: setFollowerCount,
+    deleteMessage: deleteMessage,
+    displayInfoMessage: displayInfoMessage,
+    setIsLoading: setIsLoading,
   };
 
-const presenterRef = useRef<UserInfoPresenter | null>(null);
+  const presenterRef = useRef<UserInfoPresenter | null>(null);
   if (!presenterRef.current) {
     presenterRef.current = new UserInfoPresenter(listener);
   }
@@ -40,7 +43,11 @@ const presenterRef = useRef<UserInfoPresenter | null>(null);
   }
 
   useEffect(() => {
-    presenterRef.current!.setIsFollowerStatus(authToken!, currentUser!, displayedUser!);
+    presenterRef.current!.setIsFollowerStatus(
+      authToken!,
+      currentUser!,
+      displayedUser!
+    );
     presenterRef.current!.setNumbFollowees(authToken!, displayedUser!);
     presenterRef.current!.setNumbFollowers(authToken!, displayedUser!);
   }, [displayedUser]);
@@ -60,64 +67,14 @@ const presenterRef = useRef<UserInfoPresenter | null>(null);
     event: React.MouseEvent
   ): Promise<void> => {
     event.preventDefault();
-
-    var followingUserToast = "";
-
-    try {
-      setIsLoading(true);
-      followingUserToast = displayInfoMessage(
-        `Following ${displayedUser!.name}...`,
-        0
-      );
-
-      const [followerCount, followeeCount] = await presenterRef.current!.follow(
-        authToken!,
-        displayedUser!
-      );
-
-      setIsFollower(true);
-      setFollowerCount(followerCount);
-      setFolloweeCount(followeeCount);
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to follow user because of exception: ${error}`
-      );
-    } finally {
-      deleteMessage(followingUserToast);
-      setIsLoading(false);
-    }
+    presenterRef.current!.followDisplayedUser(displayedUser!, authToken!);
   };
 
   const unfollowDisplayedUser = async (
     event: React.MouseEvent
   ): Promise<void> => {
     event.preventDefault();
-
-    var unfollowingUserToast = "";
-
-    try {
-      setIsLoading(true);
-      unfollowingUserToast = displayInfoMessage(
-        `Unfollowing ${displayedUser!.name}...`,
-        0
-      );
-
-      const [followerCount, followeeCount] = await presenterRef.current!.unfollow(
-        authToken!,
-        displayedUser!
-      );
-
-      setIsFollower(false);
-      setFollowerCount(followerCount);
-      setFolloweeCount(followeeCount);
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to unfollow user because of exception: ${error}`
-      );
-    } finally {
-      deleteMessage(unfollowingUserToast);
-      setIsLoading(false);
-    }
+    presenterRef.current!.unfollowDisplayedUser(displayedUser!, authToken!);
   };
 
   return (

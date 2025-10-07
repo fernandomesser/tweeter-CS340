@@ -25,7 +25,7 @@ export abstract class StatusItemPresenter {
   protected get lastItem(): Status | null {
     return this._lastItem;
   }
-  
+
   protected set lastItem(value: Status | null) {
     this._lastItem = value;
   }

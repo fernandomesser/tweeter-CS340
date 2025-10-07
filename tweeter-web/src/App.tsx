@@ -56,7 +56,9 @@ const AuthenticatedRoutes = () => {
           element={
             <StatusItemScroller
               key={`feed-${displayedUser!.alias}`}
-              presenterFactory={(view: StatusItemView) => new FeedPresenter(view)}
+              presenterFactory={(view: StatusItemView) =>
+                new FeedPresenter(view)
+              }
             />
           }
         />
@@ -65,7 +67,9 @@ const AuthenticatedRoutes = () => {
           element={
             <StatusItemScroller
               key={`story-${displayedUser!.alias}`}
-              presenterFactory={(view: StatusItemView) => new StoryPresenter(view)}
+              presenterFactory={(view: StatusItemView) =>
+                new StoryPresenter(view)
+              }
             />
           }
         />
@@ -75,7 +79,9 @@ const AuthenticatedRoutes = () => {
             <UserItemScroller
               key={`followees-${displayedUser!.alias}`}
               featureUrl="/followees"
-              presenterFactory={(view: UserItemView) => new FolloweePresenter(view)}
+              presenterFactory={(view: UserItemView) =>
+                new FolloweePresenter(view)
+              }
             />
           }
         />
@@ -85,7 +91,9 @@ const AuthenticatedRoutes = () => {
             <UserItemScroller
               key={`followers-${displayedUser!.alias}`}
               featureUrl="/followers"
-              presenterFactory={(view: UserItemView) => new FollowerPresenter(view)}
+              presenterFactory={(view: UserItemView) =>
+                new FollowerPresenter(view)
+              }
             />
           }
         />
