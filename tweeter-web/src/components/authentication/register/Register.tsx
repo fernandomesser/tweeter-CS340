@@ -28,7 +28,7 @@ const Register = () => {
 
   const listener: RegisterView = {
     setIsLoading: setIsLoading,
-    navigateTo: navigate,
+    navigate: navigate,
     displayErrorMessage: displayErrorMessage,
     updateUserInfo: updateUserInfo,
     setImageUrl: setImageUrl,
@@ -64,15 +64,15 @@ const Register = () => {
   };
 
   const doRegister = async () => {
-    presenterRef.current!.doRegister({
+    presenterRef.current!.doRegister(
       firstName,
       lastName,
       alias,
       password,
       imageBytes,
       imageFileExtension,
-      rememberMe,
-    });
+      rememberMe
+    );
   };
 
   const inputFieldFactory = () => {

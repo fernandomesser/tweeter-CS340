@@ -1,71 +1,36 @@
-import { User, AuthToken } from "tweeter-shared";
-import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
+import { AuthPresenter, AuthView } from "./AuthPresenter";
 
-export interface RegisterView {
-  setImageUrl(value: string): void;
-  setImageBytes(value: Uint8Array): void;
-  setIsLoading(value: boolean): void;
-  navigateTo(url: string): void;
-  displayErrorMessage(message: string): void;
+export interface RegisterView extends AuthView {
   setImageFileExtension(value: string): void;
-  updateUserInfo(
-    currentUser: User,
-    displayedUser: User,
-    authToken: AuthToken,
-    rememberMe: boolean
-  ): void;
+  setImageBytes(value: Uint8Array): void;
+  setImageUrl(value: string): void;
 }
 
-export class RegisterPresenter {
-  private userService: UserService;
-  private view: RegisterView;
-
-  public constructor(view: RegisterView) {
-    this.userService = new UserService();
-    this.view = view;
-  }
-
-  public async doRegister(params: {
-    firstName: string;
-    lastName: string;
-    alias: string;
-    password: string;
-    imageBytes: Uint8Array;
-    imageFileExtension: string;
-    rememberMe: boolean;
-  }) {
-    const {
-      firstName,
-      lastName,
-      alias,
-      password,
-      imageBytes,
-      imageFileExtension,
-      rememberMe,
-    } = params;
-
-    try {
-      this.view.setIsLoading(true);
-
-      const [user, authToken] = await this.userService.register(
-        firstName,
-        lastName,
-        alias,
-        password,
-        imageBytes,
-        imageFileExtension
-      );
-
-      this.view.updateUserInfo(user, user, authToken, rememberMe);
-      this.view.navigateTo(`/feed/${user.alias}`);
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to register user because of exception: ${error}`
-      );
-    } finally {
-      this.view.setIsLoading(false);
-    }
+export class RegisterPresenter extends AuthPresenter<RegisterView> {
+  public async doRegister(
+    firstName: string,
+    lastName: string,
+    alias: string,
+    password: string,
+    imageBytes: Uint8Array,
+    imageFileExtension: string,
+    rememberMe: boolean
+  ) {
+    await this.doAuthOperation(
+      () =>
+        this.service.register(
+          firstName,
+          lastName,
+          alias,
+          password,
+          imageBytes,
+          imageFileExtension
+        ),
+      "/feed/:alias",
+      "register user",
+      rememberMe
+    );
   }
 
   public handleImageFile = (file: File | undefined) => {

@@ -5,7 +5,7 @@ import { User } from "../model/domain/User";
 const MALE_IMAGE_URL: string =
   "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
 const FEMALE_IMAGE_URL: string =
-  "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
+  "/Daisy.png";
 
 export class FakeData {
   private readonly _authToken: AuthToken = AuthToken.Generate();

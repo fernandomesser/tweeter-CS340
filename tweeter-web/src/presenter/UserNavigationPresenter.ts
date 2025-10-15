@@ -1,20 +1,19 @@
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
+import { Presenter, View } from "./Presenter";
 
-export interface UserNavigationView {
-  displayErrorMessage: (message: string) => string;
+export interface UserNavigationView extends View {
   normalizeAlias: (alias: string) => string;
   navigate: (url: string) => void;
   setDisplayedUser: (user: User) => void;
 }
 
-export class UserNavigationPresenter {
+export class UserNavigationPresenter extends Presenter<UserNavigationView> {
   private userService: UserService;
-  private view: UserNavigationView;
 
   public constructor(view: UserNavigationView) {
+    super(view);
     this.userService = new UserService();
-    this.view = view;
   }
 
   public async coreNavigate(
@@ -23,7 +22,7 @@ export class UserNavigationPresenter {
     authToken: AuthToken,
     displayedUser: User
   ) {
-    try {
+    this.doFailureReportingOperation(async () => {
       if (!authToken) {
         this.view.displayErrorMessage(
           "You must be signed in to view profiles."
@@ -40,10 +39,6 @@ export class UserNavigationPresenter {
           this.view.navigate(`${basePath}/${toUser.alias}`);
         }
       }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to get user because of exception: ${error}`
-      );
-    }
+    }, "get user");
   }
 }
