@@ -1,6 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
 import { Presenter, View } from "./Presenter";
-import { UserService } from "../model.service/UserService";
+import { UserService } from "../model/service/UserService";
 
 export interface AuthView extends View {
   setIsLoading(value: boolean): void;

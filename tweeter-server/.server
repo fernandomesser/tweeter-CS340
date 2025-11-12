@@ -1,0 +1,21 @@
+BUCKET='cs340-tweeter-fernando'
+LAMBDA_ROLE='arn:aws:iam::460742884946:role/tweeter'
+
+EDIT_LAMBDALIST='
+tweeterGetFollowees | lambda/follow/GetFolloweesLambda.handler
+tweeterGetFollowers | lambda/follow/GetFollowersLambda.handler
+tweeterGetIsFollowerStatus | lambda/follow/GetIsFollowerStatusLambda.handler
+tweeterGetFolloweeCount | lambda/follow/GetFolloweeCountLambda.handler
+tweeterGetFollowerCount | lambda/follow/GetFollowerCountLambda.handler
+tweeterFollow | lambda/follow/FollowLambda.handler
+tweeterUnfollow | lambda/follow/UnfollowLambda.handler
+tweeterGetUser | lambda/user/GetUserLambda.handler
+tweeterLogin | lambda/user/LoginLambda.handler
+tweeterRegister | lambda/user/RegisterLambda.handler
+tweeterLogout | lambda/user/LogoutLambda.handler
+tweeterGetFeedItems | lambda/status/GetFeedItemsLambda.handler
+tweeterGetStoryItems | lambda/status/GetStoryItemsLambda.handler
+tweeterPostStatus | lambda/status/PostStatusLambda.handler
+'
+
+LAMBDALAYER_ARN='arn:aws:lambda:us-west-2:460742884946:layer:tweeterDependencies:19'

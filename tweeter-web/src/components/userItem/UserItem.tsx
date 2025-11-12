@@ -9,8 +9,7 @@ interface Props {
 
 const UserItem = (props: Props) => {
   const { navigateToUser } = useUserNavigation();
-  
-  
+
   return (
     <div className="col bg-light mx-0 px-0">
       <div className="container px-0">

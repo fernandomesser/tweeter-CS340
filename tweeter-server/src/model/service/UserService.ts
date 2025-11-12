@@ -1,28 +1,25 @@
 import { Buffer } from "buffer";
-import { AuthToken, User, FakeData } from "tweeter-shared";
+import { FakeData, UserDto } from "tweeter-shared";
 import { Service } from "./Service";
 
 export class UserService implements Service {
-  public async getUser(
-    authToken: AuthToken,
-    alias: string
-  ): Promise<User | null> {
+  public async getUser(token: string, alias: string): Promise<UserDto | null> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.findUserByAlias(alias);
+    return this.getFakeDataUser(alias);
   }
 
   public async login(
     alias: string,
     password: string
-  ): Promise<[User, AuthToken]> {
+  ): Promise<[UserDto, string]> {
     // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
+    const user = await this.getFakeDataFirstUser();
 
     if (user === null) {
       throw new Error("Invalid alias or password");
     }
 
-    return [user, FakeData.instance.authToken];
+    return [user, FakeData.instance.authToken.token];
   }
 
   public async register(
@@ -30,25 +27,41 @@ export class UserService implements Service {
     lastName: string,
     alias: string,
     password: string,
-    userImageBytes: Uint8Array,
+    userImageBytes: string,
     imageFileExtension: string
-  ): Promise<[User, AuthToken]> {
+  ): Promise<[UserDto, string]> {
     // Not neded now, but will be needed when you make the request to the server in milestone 3
     const imageStringBase64: string =
       Buffer.from(userImageBytes).toString("base64");
 
     // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
+    const user = await this.getFakeDataFirstUser();
 
     if (user === null) {
       throw new Error("Invalid registration");
     }
 
-    return [user, FakeData.instance.authToken];
+    return [user, FakeData.instance.authToken.token];
   }
 
-  public async logout(authToken: AuthToken): Promise<void> {
+  public async logout(token: string): Promise<void> {
     // Pause so we can see the logging out message. Delete when the call to the server is implemented.
     await new Promise((res) => setTimeout(res, 1000));
+  }
+
+  private async getFakeDataUser(alias: string): Promise<UserDto | null> {
+    const theuser = FakeData.instance.findUserByAlias(alias);
+    if (!theuser) {
+      return null;
+    }
+    return theuser.dto;
+  }
+
+  private async getFakeDataFirstUser(): Promise<UserDto | null> {
+    const fakeUser = FakeData.instance.firstUser;
+    if (!fakeUser) {
+      return null;
+    }
+    return fakeUser.dto;
   }
 }

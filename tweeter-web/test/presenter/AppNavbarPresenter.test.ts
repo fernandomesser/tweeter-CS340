@@ -12,7 +12,7 @@ import {
   AppNavbarPresenter,
 } from "../../src/presenter/AppNavbarPresenter";
 import { AuthToken } from "tweeter-shared";
-import { UserService } from "../../src/model.service/UserService";
+import { UserService } from "../../src/model/service/UserService";
 
 describe("AppNavbarPresenter", () => {
   let mockAppNavbarPresenterView: AppNavbarView;

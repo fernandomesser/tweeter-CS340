@@ -1,22 +1,27 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "ES2022",
-    "useDefineForClassFields": true,
     "module": "CommonJS",
     "lib": ["ES2022"],
-    "skipLibCheck": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "declaration": true,
-    "esModuleInterop": true,
+    "declarationMap": true,
+    "sourceMap": true,
 
+    "useDefineForClassFields": true,
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "isolatedModules": true,
 
-    /* Linting */
     "strict": true,
+    "skipLibCheck": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules"]
 }
